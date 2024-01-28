@@ -12,7 +12,7 @@
 
     <div class="menu" aria-label="Main Menu">
         <ul>
-            <li><a href="/">Home</a></li>
+            <li><a href="#">Home</a></li><!-- This is an SEO Change -->
             <li><a href="about.html">About</a></li>
             <li><a href="login.html">Login</a></li>
             <li><a href="https://google.com" target="_blank" rel="noopener noreferrer">Google</a></li> <!-- This is a Semantic HTML Change (target attribute)--> <!-- This is an SEO Change --> <!-- enhances the security of the webpage-->
@@ -38,8 +38,8 @@
             </div>
     
             <div class="text-box">
-                <h1>Alerts</h1>
-                <p>
+                <h1 id="alerts-heading">Alerts</h1><!-- This is an A11y Change -->
+                <p aria-labelledby="alerts-heading"><!-- This is an A11y Change -->
                     What if your clothing budget ended? You will get an alert. The goal is to never go over the budget.
                 </p>
             </div>
@@ -95,7 +95,7 @@
 
     </div>
 
-    <footer class="bottom">
+    <footer class="bottom"><!-- This is a Semantic HTML Change -->
         <div class="center">
             <small>All rights reserved &copy; Rithvick Reddy</small><!-- This is a Semantic HTML Change -->
         </div>
