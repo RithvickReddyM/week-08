@@ -96,3 +96,8 @@ div.hero h2 {
         margin: 10px;
     }
 }
+
+#myChart {
+    max-width: 400px;
+    max-height: 400px;
+}
