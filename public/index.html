@@ -96,6 +96,8 @@
                 <h2> Chart.js chart</h2>
                 <div id="test">
                     <canvas id="myChart" width="400" height="400"></canvas>
+                    <h2> D3JS Chart</h2>
+                    <div id="chart"></div>
                  </div>
                    
         </div>
@@ -112,7 +114,61 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        var data = {
+
+        const getDataFromJson = async () => {
+            var data;
+            var r = await axios.get('/budget');
+            return r.data.myBudget;
+        };
+
+        const createD3JSChart = async () => {
+
+            var data = await getDataFromJson();
+            var width = 400;
+            var height = 400;
+            var radius = Math.min(width, height) / 2;
+
+            var svg = d3.select("#chart")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .append("g")
+                .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        
+            var color = d3.scaleOrdinal()
+                .range(["#ffcd56", "#ff6384", "#36a2eb", "#fd6b19", "#000080", "#800080", "#808080", "#a52a2a", "#5f9ea0"]);
+
+           
+            var pie = d3.pie()
+                .value(function(d) { return d.budget; });
+
+       
+            var arc = d3.arc()
+                .innerRadius(0)
+                .outerRadius(radius);
+
+         
+            var arcs = svg.selectAll("arc")
+                .data(pie(data))
+                .enter()
+                .append("g");
+
+          
+            arcs.append("path")
+                .attr("d", arc)
+                .attr("fill", function(d) { return color(d.data.title); });
+
+            
+            arcs.append("text")
+                .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+                .attr("text-anchor", "middle")
+                .text(function(d) { return d.data.title; });
+        }
+       createD3JSChart();
+
+
+        var data_chartjs = {
                     data: [],
                     backgroundColor: [
                         '#fd6b19',
@@ -131,11 +187,11 @@
           new Chart(myChart, {
             type: "doughnut",
             data: {
-                labels: data.labels,
+                labels: data_chartjs.labels,
                 datasets: [
                 {
                     label: "Language Popularity",
-                    data: data.data,
+                    data: data_chartjs.data,
                 },
                 ],
             }
@@ -148,8 +204,8 @@
             axios.get('/budget')
             .then((res) => {
                 for(var i = 0; i < res.data.myBudget.length; i++ ){
-                    data.data.push(res.data.myBudget[i].budget);
-                    data.labels.push(res.data.myBudget[i].title);
+                    data_chartjs.data.push(res.data.myBudget[i].budget);
+                    data_chartjs.labels.push(res.data.myBudget[i].title);
                 }
                 createChartJSChart();
             })
